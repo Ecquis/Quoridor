@@ -20,7 +20,7 @@ public class Cell : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (!isAvailableToStep()) { return; }
+        if (!isAvailableToStep() || !Game.isGameRunning()) { return; }
         cellView.SetColor("hover");
 
     }
@@ -32,7 +32,7 @@ public class Cell : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!isAvailableToStep()) { return; }
+        if (!isAvailableToStep() || !Game.isGameRunning()) { return; }
         Game.currentPlayer.GetComponent<PlayerController>().Move(x, y);
         Player oppositePlayer = Game.oppositePlayer.GetComponent<Player>();
     }
@@ -45,7 +45,7 @@ public class Cell : MonoBehaviour
         if (Game.gameArray[x, y] != Constants.FIELD_ID) { return false; }
         int playerId = Game.currentPlayer.GetComponent<Player>().Id;
         int oppositePlayerId = Game.oppositePlayer.GetComponent<Player>().Id;
-        
+
         // if there are no walls on n, e, s, w
         if (Game.gameArray[l(x - 2), y] == playerId && Game.gameArray[l(x - 1), y] != Constants.WALL_ID) { return true; }
         if (Game.gameArray[l(x + 2), y] == playerId && Game.gameArray[l(x + 1), y] != Constants.WALL_ID) { return true; }

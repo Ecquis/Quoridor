@@ -23,19 +23,19 @@ public class Wall : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (!isAvailableToSet()) { return; }
+        if (!isAvailableToSet() || !Game.isGameRunning()) { return; }
         wallView.SetColor("hover");
     }
 
     void OnMouseExit()
     {
-        if (!isAvailableToSet()) { return; }
+        if (!isAvailableToSet() || !Game.isGameRunning()) { return; }
         wallView.SetColor("transparent");
     }
 
     void OnMouseDown()
     {
-        if (!isAvailableToSet()) { return; }
+        if (!isAvailableToSet() || !Game.isGameRunning()) { return; }
 
         Game.gameArray[x, y] = Constants.WALL_ID;
         if (isVertical)
@@ -49,18 +49,21 @@ public class Wall : MonoBehaviour
             Game.gameArray[x + 2, y] = Constants.WALL_ID;
         }
         isSet = true;
-        Debug.Log(this.x + " " + this.y);
         wallView.SetColor("set");
         Game.printField();
 
-
+        PlayerController currentPlayerController = Game.currentPlayer.GetComponent<PlayerController>();
+        int walls = currentPlayerController.incWall();
+        Debug.Log(Game.currentPlayer.name + " sets wall #" + walls);
+        Game.SwitchPlayer();
     }
 
     bool isAvailableToSet()
     {
+
         if (isSet) { return false; }
 
-        if (Game.gameArray[x, y] == Constants.WALL_ID) { Debug.Log(1);  return false; }
+        if (Game.gameArray[x, y] == Constants.WALL_ID) { return false; }
         if (this.isVertical)
         {
             if (Game.gameArray[x, y + 1] == Constants.WALL_ID) { return false; }
@@ -72,6 +75,9 @@ public class Wall : MonoBehaviour
             if (Game.gameArray[x + 1, y + 1] == Constants.WALL_ID && Game.gameArray[x + 1, y - 1] == Constants.WALL_ID) { return false; }
             if (Game.gameArray[x + 2, y] == Constants.WALL_ID) { return false; }
         }
+
+        Player currentPlayerModel = Game.currentPlayer.GetComponent<Player>();
+        if (currentPlayerModel.wallsSet >= Player.wallsMax) { return false; }
 
         return true;
     }

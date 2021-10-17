@@ -8,12 +8,15 @@ public class CellView : MonoBehaviour
     static Color cellColor = new Color(239f / b, 238f / b, 238f / b, 255f / b);
     static Color cellHoverColor = new Color(139f / b, 138f / b, 138f / b, 255f / b);
 
+    Color defaultColor;
+
     SpriteRenderer rend;
 
     // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
+        defaultColor = cellColor;
     }
 
     public void SetColor(string colorStr)

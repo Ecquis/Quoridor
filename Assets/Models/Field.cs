@@ -9,7 +9,7 @@ public class Field : MonoBehaviour
     
     void Start()
     {
-        Debug.Log(Constants.WALL_ID);
+
     }
 
     // Update is called once per frame

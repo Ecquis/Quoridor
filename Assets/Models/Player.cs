@@ -6,6 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int x, y;
+    public int wallsSet;
+    public const int wallsMax = 10;
     public KeyValuePair<int, int> location;
     public int Id;
     private int OpositeId;
@@ -20,6 +22,7 @@ public class Player : MonoBehaviour
         OpositeId = Id == Constants.PLAYER1_ID ? Constants.PLAYER2_ID : Constants.PLAYER1_ID;
         WinPosition = winPosition;
         this.field = field;
+        wallsSet = 0;
     }
 
     // Start is called before the first frame update

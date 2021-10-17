@@ -27,7 +27,20 @@ public class PlayerController : MonoBehaviour
         playerModel.x = x;
         playerModel.y = y;
         Game.gameArray[x, y] = playerModel.Id;
-        Game.SwitchPlayer();
+
+        if (y == playerModel.WinPosition) { 
+            Debug.Log(Game.currentPlayer.name + " wins!");
+            Game.Stop();
+            return; 
+        }
+
+        Game.SwitchPlayer();    
         Game.printField();
+    }
+
+    public int incWall() {
+        Player playerModel = GetComponent<Player>();
+        playerModel.wallsSet += 1;
+        return playerModel.wallsSet;
     }
 }

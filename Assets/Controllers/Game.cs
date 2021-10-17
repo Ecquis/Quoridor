@@ -18,9 +18,12 @@ public class Game : MonoBehaviour
 
     public static GameObject currentPlayer;
     public static GameObject oppositePlayer;
+
+    public static string status;
     // Start is called before the first frame update
     void Start()
     {
+        status = "game";
         currentPlayer = GameObject.Find("Player1");
         oppositePlayer = GameObject.Find("Player2");
         gameArray = new int[Constants.ARRAY_SIZE, Constants.ARRAY_SIZE];
@@ -76,5 +79,13 @@ public class Game : MonoBehaviour
         GameObject temp = currentPlayer;
         currentPlayer = oppositePlayer;
         oppositePlayer = temp;
+    }
+
+    public static void Stop() {
+        status = "stop";
+    }
+
+    public static bool isGameRunning() {
+        return status == "game";
     }
 }
