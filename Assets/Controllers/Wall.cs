@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Wall : MonoBehaviour
 {
@@ -52,8 +53,28 @@ public class Wall : MonoBehaviour
         wallView.SetColor("set");
         Game.printField();
 
+        Player currentPlayerModel = Game.currentPlayer.GetComponent<Player>();
+        if (currentPlayerModel.Id == Constants.PLAYER1_ID)
+        {
+            Game.player1Walls.GetComponent<Text>().text = Constants.PLAYER1_STRING + ": " + currentPlayerModel.wallsSet;
+        }
+        else
+        {
+            Game.player2Walls.GetComponent<Text>().text = Constants.PLAYER2_STRING + ": " + currentPlayerModel.wallsSet;
+        }
+        
         PlayerController currentPlayerController = Game.currentPlayer.GetComponent<PlayerController>();
         int walls = currentPlayerController.incWall();
+        
+        if (currentPlayerModel.Id == Constants.PLAYER1_ID)
+        {
+            Game.player1Walls.GetComponent<Text>().text = Constants.PLAYER1_STRING + ": " + ( 10 - walls );
+        }
+        else
+        {
+            Game.player2Walls.GetComponent<Text>().text = Constants.PLAYER2_STRING + ": " + ( 10 - walls );
+        }
+        
         Debug.Log(Game.currentPlayer.name + " sets wall #" + walls);
         Game.SwitchPlayer();
     }

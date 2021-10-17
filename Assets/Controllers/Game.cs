@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class Game : MonoBehaviour
 
     public static GameObject currentPlayer;
     public static GameObject oppositePlayer;
+    public static GameObject player1Walls;
+    public static GameObject player2Walls;
+    public static GameObject whoseMove;
 
     public static string status;
     // Start is called before the first frame update
@@ -26,6 +30,12 @@ public class Game : MonoBehaviour
         status = "game";
         currentPlayer = GameObject.Find("Player1");
         oppositePlayer = GameObject.Find("Player2");
+        player1Walls = GameObject.Find("Player1Walls");
+        player2Walls = GameObject.Find("Player2Walls");
+        player1Walls.GetComponent<Text>().text = Constants.PLAYER1_STRING + ": " + Constants.WALLS;
+        player2Walls.GetComponent<Text>().text = Constants.PLAYER2_STRING + ": " + Constants.WALLS;
+        whoseMove = GameObject.Find("WhoseMove");
+        whoseMove.GetComponent<Text>().text = Constants.PLAYER1_STRING;
         gameArray = new int[Constants.ARRAY_SIZE, Constants.ARRAY_SIZE];
         for (int ix = 0; ix < Constants.ARRAY_SIZE; ix++)
         {
@@ -79,6 +89,9 @@ public class Game : MonoBehaviour
         GameObject temp = currentPlayer;
         currentPlayer = oppositePlayer;
         oppositePlayer = temp;
+        Game.whoseMove.GetComponent<Text>().text = Game.whoseMove.GetComponent<Text>().text == Constants.PLAYER1_STRING
+            ? Constants.PLAYER2_STRING
+            : Constants.PLAYER1_STRING;
     }
 
     public static void Stop() {
