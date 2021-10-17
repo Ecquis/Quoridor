@@ -8,22 +8,11 @@ public class Player : MonoBehaviour
     public int x, y;
     public int wallsSet;
     public const int wallsMax = 10;
-    public KeyValuePair<int, int> location;
     public int Id;
     private int OpositeId;
     public int WinPosition;
     private int[,] field;
     private readonly Dictionary<KeyValuePair<int, int>, int> _winWays = new Dictionary<KeyValuePair<int, int>, int>();
-
-    public Player(KeyValuePair<int, int> location, int id, int winPosition, int[,] field)
-    {
-        this.location = location;
-        Id = id;
-        OpositeId = Id == Constants.PLAYER1_ID ? Constants.PLAYER2_ID : Constants.PLAYER1_ID;
-        WinPosition = winPosition;
-        this.field = field;
-        wallsSet = 0;
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +31,7 @@ public class Player : MonoBehaviour
     public bool HaveWinWay()
     {
         step = 0;
-        MarkField(location.Key, location.Value);
+        MarkField(x, y);
         return _winWays.Any(field => field.Key.Value == OpositeId);
     }
 
