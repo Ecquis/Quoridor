@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int x, y;
     public KeyValuePair<int, int> location;
     public int Id;
     private int OpositeId;
@@ -24,17 +25,17 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private int step = 0;
-    
+
     public bool HaveWinWay()
     {
         step = 0;
@@ -46,11 +47,11 @@ public class Player : MonoBehaviour
     {
         if ((0 <= x && x < Constants.ARRAY_SIZE) && (0 <= y && y < Constants.ARRAY_SIZE))
         {
-            if (field[x, y] == Constants.FIELD_ID)
+            if (Game.gameArray[x, y] == Constants.FIELD_ID)
             {
                 var isXInField = x % 2 == 0;
                 var isYInField = y % 2 == 0;
-            
+
                 if (isXInField && isYInField)
                 {
                     if (_winWays.ContainsKey(new KeyValuePair<int, int>(x, y)))
@@ -62,17 +63,20 @@ public class Player : MonoBehaviour
                     MarkField(x - 1, y);
                     MarkField(x, y + 1);
                     MarkField(x, y - 1);
-                } else if (isXInField)
+                }
+                else if (isXInField)
                 {
                     MarkField(x, y + 1);
                     MarkField(x, y - 1);
-                } else if (isYInField)
+                }
+                else if (isYInField)
                 {
                     MarkField(x + 1, y);
                     MarkField(x - 1, y);
                 }
-            
-            } else if (field[x, y] == OpositeId)
+
+            }
+            else if (Game.gameArray[x, y] == OpositeId)
             {
                 MarkField(x + 2, y);
                 MarkField(x - 2, y);
@@ -84,7 +88,7 @@ public class Player : MonoBehaviour
                 MarkField(x + 2, y - 2);
             }
         }
-        
-        
+
+
     }
 }

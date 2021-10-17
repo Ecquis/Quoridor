@@ -25,7 +25,6 @@ public class WallView : MonoBehaviour
 
     public void SetColor(string colorStr)
     {
-        Debug.Log(rend);
         switch (colorStr)
         {
             case "transparent":
