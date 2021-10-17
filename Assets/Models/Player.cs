@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     private int OpositeId;
     public int WinPosition;
     private int[,] field;
-    private readonly Dictionary<KeyValuePair<int, int>, int> _winWays = new Dictionary<KeyValuePair<int, int>, int>();
 
     // Start is called before the first frame update
     void Start()
@@ -26,61 +25,96 @@ public class Player : MonoBehaviour
 
     }
 
-    private int step = 0;
+    private int steps = 0;
 
     public bool HaveWinWay()
     {
-        step = 0;
-        MarkField(x, y);
-        return _winWays.Any(field => field.Key.Value == OpositeId);
-    }
-
-    public void MarkField(int x, int y)
-    {
-        if ((0 <= x && x < Constants.ARRAY_SIZE) && (0 <= y && y < Constants.ARRAY_SIZE))
-        {
-            if (Game.gameArray[x, y] == Constants.FIELD_ID)
-            {
-                var isXInField = x % 2 == 0;
-                var isYInField = y % 2 == 0;
-
-                if (isXInField && isYInField)
-                {
-                    if (_winWays.ContainsKey(new KeyValuePair<int, int>(x, y)))
-                    {
-                        _winWays.Add(new KeyValuePair<int, int>(x, y), step);
-                        step++;
-                    }
-                    MarkField(x + 1, y);
-                    MarkField(x - 1, y);
-                    MarkField(x, y + 1);
-                    MarkField(x, y - 1);
-                }
-                else if (isXInField)
-                {
-                    MarkField(x, y + 1);
-                    MarkField(x, y - 1);
-                }
-                else if (isYInField)
-                {
-                    MarkField(x + 1, y);
-                    MarkField(x - 1, y);
-                }
-
+        field = new int[Constants.ARRAY_SIZE, Constants.ARRAY_SIZE];
+        steps = 0;
+        checkCell(x, y);
+        string s = "";
+        for (int ix = 0; ix < Constants.ARRAY_SIZE; ix ++) {
+            for (int iy = 0; iy < Constants.ARRAY_SIZE; iy ++) {
+                s += field[ix, iy] + " ";
             }
-            else if (Game.gameArray[x, y] == OpositeId)
-            {
-                MarkField(x + 2, y);
-                MarkField(x - 2, y);
-                MarkField(x, y + 2);
-                MarkField(x, y - 2);
-                MarkField(x + 2, y + 2);
-                MarkField(x - 2, y - 2);
-                MarkField(x - 2, y + 2);
-                MarkField(x + 2, y - 2);
+            s = s + "\n";
+        }
+        Debug.Log(s);
+        for (int i = 0; i < Constants.ARRAY_SIZE; i ++) {
+            if (field[i, WinPosition] == 1) { 
+                return true;
             }
         }
-
-
+        return false;
     }
+
+    void checkCell(int x, int y) {
+        if (!((0 <= x && x < Constants.ARRAY_SIZE) && (0 <= y && y < Constants.ARRAY_SIZE))) { return; }
+        if (field[x, y] != 0) { return; }
+        if (Game.gameArray[x, y] == Constants.WALL_ID) {
+            field[x, y] = -1;
+        } else {
+            field[x, y] = 1;
+            if (Game.gameArray[Game.limit(x + 1), y] != Constants.WALL_ID) {
+                checkCell(x + 1, y);
+            }
+            if (Game.gameArray[Game.limit(x - 1), y] != Constants.WALL_ID) {
+                checkCell(x - 1, y);
+            }
+            if (Game.gameArray[x, Game.limit(y + 1)] != Constants.WALL_ID) {
+                checkCell(x, y + 1);
+            }
+            if (Game.gameArray[x, Game.limit(y - 1)] != Constants.WALL_ID) {
+                checkCell(x, y - 1);
+            }
+        }
+    }
+
+    // bool fieldHasUnprocessedCells() {
+    //     for (int ix = 0; ix < Constants.ARRAY_SIZE; ix += 2) {
+    //         for (int iy = 0; iy < Constants.ARRAY_SIZE; iy += 2) {
+    //             if (field[ix, iy] == Constants.FIELD_ID) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    // public void MarkField(int x, int y, int loop)
+    // {
+    //     loop += 1;
+    //     if (loop > 100) {
+    //         Application.Quit();
+    //     }
+    //     Debug.Log(x + " " + y);
+    //     if ((0 <= x && x < Constants.ARRAY_SIZE) && (0 <= y && y < Constants.ARRAY_SIZE))
+    //     {
+    //         var isXInField = x % 2 == 0;
+    //         var isYInField = y % 2 == 0;
+    //         Debug.Log(isXInField + " " + isYInField);
+    //         if (isXInField && isYInField)
+    //         {
+    //             if (_winWays.ContainsKey(new KeyValuePair<int, int>(x, y)))
+    //             {
+    //                 _winWays.Add(new KeyValuePair<int, int>(x, y), step);
+    //                 step++;
+    //             }
+    //             MarkField(x + 1, y, loop);
+    //             MarkField(x - 1, y, loop);
+    //             MarkField(x, y + 1, loop);
+    //             MarkField(x, y - 1, loop);
+    //         }
+    //         else if (isXInField)
+    //         {
+    //             MarkField(x, y + 1, loop);
+    //             MarkField(x, y - 1, loop);
+    //         }
+    //         else if (isYInField)
+    //         {
+    //             MarkField(x + 1, y, loop);
+    //             MarkField(x - 1, y, loop);
+    //         }
+    //     }
+    // }
 }

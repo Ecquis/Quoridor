@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Game : MonoBehaviour
 {
     public static List<List<GameObject>> gameObjects = new List<List<GameObject>>();
@@ -89,9 +89,6 @@ public class Game : MonoBehaviour
         GameObject temp = currentPlayer;
         currentPlayer = oppositePlayer;
         oppositePlayer = temp;
-        Game.whoseMove.GetComponent<Text>().text = Game.whoseMove.GetComponent<Text>().text == Constants.PLAYER1_STRING
-            ? Constants.PLAYER2_STRING
-            : Constants.PLAYER1_STRING;
     }
 
     public static void Stop() {
@@ -100,5 +97,9 @@ public class Game : MonoBehaviour
 
     public static bool isGameRunning() {
         return status == "game";
+    }
+
+    public void Exit () {
+        SceneManager.LoadScene(0);
     }
 }

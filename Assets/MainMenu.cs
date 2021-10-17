@@ -8,11 +8,13 @@ public class MainMenu : MonoBehaviour
 
 	public void Play1vs1Game ()
 	{
+		Shared.mode = "1vs1";
 		SceneManager.LoadScene(1);
 	}
 	
 	public void PlayBotGame ()
 	{
+		Shared.mode = "bot";
 		SceneManager.LoadScene(1);
 	}
 
