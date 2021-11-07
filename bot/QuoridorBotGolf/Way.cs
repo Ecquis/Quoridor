@@ -31,6 +31,12 @@ namespace QuoridorBotGolf
             return points[0];
         }
 
+        public Point GetPoint(int index)
+        {
+            if (index >= GetLength()) { return null; }
+            return points[index];
+        }
+
         public void AddPoint(Point point)
         {
             points.Append(point);
