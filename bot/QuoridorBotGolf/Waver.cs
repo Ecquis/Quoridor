@@ -10,7 +10,9 @@ namespace QuoridorBotGolf
     {
         public static Way FindWinWay(Player player)
         {
-            return new Way();
+            Way way = new Way();
+            way.AddPoint(new Point(5, 6));
+            return way;
         }
     }
 }

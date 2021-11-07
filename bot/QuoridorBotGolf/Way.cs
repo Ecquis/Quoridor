@@ -39,7 +39,7 @@ namespace QuoridorBotGolf
 
         public void AddPoint(Point point)
         {
-            points.Append(point);
+            points.Add(point);
         }
 
         public void RemoveLastPoint()

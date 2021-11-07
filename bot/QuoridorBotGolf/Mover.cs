@@ -33,7 +33,7 @@ namespace QuoridorBotGolf
         public static string Move(Point point)
         {
             Bot.ourPlayer.SetPosition(point);
-            return Translator.PointToHuman(point);
+            return Translator.PointToHuman(point, false);
         }
 
         public static string TryToSetWall(Way way)
@@ -49,10 +49,10 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 1)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
                 }
                 if (currentPoint.x - Bot.oppositePlayer.x < 0)
                 {
@@ -62,10 +62,10 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 1)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
 
                     wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
                 }
 
                 if (currentPoint.y - Bot.oppositePlayer.y > 0)
@@ -76,10 +76,10 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 2)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "v"; }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "v"; }
                 }
 
                 if (currentPoint.y - Bot.oppositePlayer.y < 0)
@@ -90,10 +90,10 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 2)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "h"; }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint); }
+                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "h"; }
                 }
             }
             return null;
