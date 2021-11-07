@@ -1,0 +1,16 @@
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.exe
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.deps.json
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.runtimeconfig.json
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.runtimeconfig.dev.json
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.dll
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\ref\QuoridorBotGolf.dll
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\bin\Debug\net5.0\QuoridorBotGolf.pdb
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.csproj.AssemblyReference.cache
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.GeneratedMSBuildEditorConfig.editorconfig
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.AssemblyInfoInputs.cache
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.AssemblyInfo.cs
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.csproj.CoreCompileInputs.cache
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.dll
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\ref\QuoridorBotGolf.dll
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.pdb
+D:\Study\VII семестр\Gamedev\quoridor\bot\QuoridorBotGolf\obj\Debug\net5.0\QuoridorBotGolf.genruntimeconfig.cache
