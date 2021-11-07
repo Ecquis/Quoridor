@@ -15,5 +15,11 @@ namespace QuoridorBotGolf
             this.y = y;
             this.winPosition = winPosition;
         }
+
+        public void SetPosition(Point point)
+        {
+            this.x = point.x;
+            this.y = point.y;
+        }
     }
 }

@@ -24,6 +24,13 @@ namespace QuoridorBotGolf
             return points.Count;
         }
 
+        public Point GetFirstPoint()
+        {
+            if (points.Count == 0) { return null; }
+
+            return points[0];
+        }
+
         public void AddPoint(Point point)
         {
             points.Append(point);

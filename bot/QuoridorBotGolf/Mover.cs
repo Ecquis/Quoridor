@@ -10,12 +10,27 @@ namespace QuoridorBotGolf
     {
         public string MakeMove()
         {
-            // calculate distance to the nearest win position
             Way ourWay = Waver.FindWinWay(Bot.ourPlayer);
             int ourDistance = ourWay.GetLength();
-            // calculate distance for opposite player to the NWP
 
+            Way oppositeWay = Waver.FindWinWay(Bot.oppositePlayer);
+            int oppositeDistance = oppositeWay.GetLength();   
+
+            if (ourDistance < oppositeDistance)
+            {
+                Point nextPoint = ourWay.GetFirstPoint();
+                return Mover.Move(nextPoint);
+            } else
+            {
+                // set wall
+            }
             return null;
+        }
+
+        public static string Move(Point point)
+        {
+            Bot.ourPlayer.SetPosition(point);
+            return Translator.PointToHuman(point);
         }
     }
 }
