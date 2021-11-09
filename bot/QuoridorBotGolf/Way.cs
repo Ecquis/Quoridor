@@ -23,6 +23,11 @@ namespace QuoridorBotGolf
         {
             return points.Count;
         }
+        
+        public void Reverse()
+        {
+            points.Reverse();
+        }
 
         public Point GetFirstPoint()
         {
