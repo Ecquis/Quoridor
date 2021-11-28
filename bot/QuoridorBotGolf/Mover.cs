@@ -30,13 +30,13 @@ namespace QuoridorBotGolf
             return move;
         }
 
-        public static string Move(Point point)
+        private static string Move(Point point)
         {
             Bot.ourPlayer.SetPosition(point);
             return Translator.PointToHuman(point, false);
         }
 
-        public static string TryToSetWall(Way way)
+        private static string TryToSetWall(Way way)
         {
             for (int i = 0; i < way.GetLength(); i ++)
             {
@@ -99,12 +99,12 @@ namespace QuoridorBotGolf
             return null;
         }
 
-        public static bool IsInbound(int x, int y)
+        private static bool IsInbound(int x, int y)
         {
             return !(x < 0 || x > 7 || y < 0 || y > 7);
         }
 
-        public static bool CanWallBeSet(Point point, int wallType)
+        private static bool CanWallBeSet(Point point, int wallType)
         {
             Bot.walls[point.x, point.y] = wallType;
             Way ourWay = Waver.FindWinWay(Bot.ourPlayer);
@@ -116,7 +116,7 @@ namespace QuoridorBotGolf
             return ourDistance != 0 && oppositeDistance != 0;
         }
 
-        public static bool IsWallSetAt(Point point, int wallType)
+        private static bool IsWallSetAt(Point point, int wallType)
         {
             return IsInbound(point.x, point.y) && Bot.walls[point.x, point.y] == wallType;
         }

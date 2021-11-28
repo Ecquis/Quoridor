@@ -70,7 +70,7 @@ namespace QuoridorBotGolf
             return way;
         }
 
-        static bool CheckWall(int x, int y, int originX, int originY)
+        private static bool CheckWall(int x, int y, int originX, int originY)
 		{
             int wallType = 0, wallX = -1, wallY = -1;
             if(x > originX || y > originY)
@@ -120,7 +120,7 @@ namespace QuoridorBotGolf
             return true;
 		}
 
-        static Way RecoverWay(int winPosition, int markNumber)
+        private static Way RecoverWay(int winPosition, int markNumber)
 		{
             Way way = new Way();
             int step = markNumber;

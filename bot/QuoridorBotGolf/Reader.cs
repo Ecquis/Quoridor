@@ -33,8 +33,7 @@ namespace QuoridorBotGolf
 
         private void AddOppositeMove(int x, int y)
         {
-            Bot.oppositePlayer.x = x;
-            Bot.oppositePlayer.y = y - 1;
+            Bot.oppositePlayer.SetPosition(new Point(x, y - 1));
         }
 
         private int FromLetterToInteger(string value)
