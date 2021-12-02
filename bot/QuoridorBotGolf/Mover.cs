@@ -16,7 +16,7 @@ namespace QuoridorBotGolf
             Way oppositeWay = Waver.FindWinWay(Bot.oppositePlayer);
             int oppositeDistance = oppositeWay.GetLength();   
 
-            if (ourDistance < oppositeDistance)
+            if (ourDistance <= oppositeDistance)
             {
                 Point nextPoint = ourWay.GetFirstPoint();
                 return Move(nextPoint);
@@ -49,10 +49,16 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 1)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
+                    if (CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return Translator.PointToHuman(wallPoint, true) + "v"; 
+                    }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
+                    if (CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return Translator.PointToHuman(wallPoint, true) + "v"; 
+                    }
                 }
                 if (currentPoint.x - Bot.oppositePlayer.x < 0)
                 {
@@ -62,10 +68,16 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 1)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
+                    if (CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return Translator.PointToHuman(wallPoint, true) + "v"; 
+                    }
 
                     wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) { return Translator.PointToHuman(wallPoint, true); }
+                    if (CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return Translator.PointToHuman(wallPoint, true) + "v"; 
+                    }
                 }
 
                 if (currentPoint.y - Bot.oppositePlayer.y > 0)
@@ -76,10 +88,16 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 2)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "v"; }
+                    if (CanWallBeSet(wallPoint, 2)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 2;
+                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                    }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "v"; }
+                    if (CanWallBeSet(wallPoint, 2)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 2;
+                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                    }
                 }
 
                 if (currentPoint.y - Bot.oppositePlayer.y < 0)
@@ -90,10 +108,16 @@ namespace QuoridorBotGolf
                     if (IsWallSetAt(w2point, 2)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "h"; }
+                    if (CanWallBeSet(wallPoint, 2)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 2;
+                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                    }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) { return Translator.PointToHuman(wallPoint, true) + "h"; }
+                    if (CanWallBeSet(wallPoint, 2)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 2;
+                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                    }
                 }
             }
             return null;
@@ -113,7 +137,22 @@ namespace QuoridorBotGolf
             Way oppositeWay = Waver.FindWinWay(Bot.oppositePlayer);
             int oppositeDistance = oppositeWay.GetLength();
             Bot.walls[point.x, point.y] = 0;
-            return ourDistance != 0 && oppositeDistance != 0;
+            if (ourDistance == 0 || oppositeDistance == 0) {
+                return false;
+            };
+
+            if (wallType == 1 && (Bot.walls[point.x, point.y - 1] == 1 || Bot.walls[point.x, point.y + 1] == 1)) // v
+            {
+                return false;
+            }
+
+            if (wallType == 2 && (Bot.walls[point.x - 1, point.y] == 2 || Bot.walls[point.x + 2, point.y] == 2)) // h
+            {
+                return false;
+            }
+
+            return true;
+
         }
 
         private static bool IsWallSetAt(Point point, int wallType)

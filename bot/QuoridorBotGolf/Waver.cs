@@ -11,7 +11,7 @@ namespace QuoridorBotGolf
         public static int[,] field = new int[9,9];
         public static Way FindWinWay(Player player)
         {
-
+            field = new int[9, 9];
             Way way;
             Point userPosition = player.GetPosition();
             int winPosition = player.winPosition;
@@ -28,7 +28,7 @@ namespace QuoridorBotGolf
                     {
                         if (field[x, y] == markNumber)
                         {
-//                            ShowField();
+                            //ShowField();
                            
 
                             if (y - 1 >= 0 && field[x, y - 1] == 0 && CheckWall(x, y - 1, x, y))

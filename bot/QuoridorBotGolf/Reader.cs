@@ -17,7 +17,7 @@ namespace QuoridorBotGolf
             
             if (info[0] == "wall")
             {
-                var orientation = info[1][2].ToString() == "v" ? 2 : 1;
+                var orientation = info[1][2].ToString() == "v" ? 1 : 2;
                 AddWall(x, y, orientation);
             }
             else
@@ -49,6 +49,14 @@ namespace QuoridorBotGolf
                 "G" => 6,
                 "H" => 7,
                 "I" => 8,
+                "S" => 0,
+                "T" => 1,
+                "U" => 2,
+                "V" => 3,
+                "W" => 4,
+                "X" => 5,
+                "Y" => 6,
+                "Z" => 7,
                 _ => -1
             };
         }
