@@ -141,12 +141,12 @@ namespace QuoridorBotGolf
                 return false;
             };
 
-            if (wallType == 1 && (Bot.walls[point.x, point.y - 1] == 1 || Bot.walls[point.x, point.y + 1] == 1)) // v
+            if (wallType == 1 && (IsInbound(point.x, point.y - 1) && Bot.walls[point.x, point.y - 1] == 1 || IsInbound(point.x, point.y + 1) && Bot.walls[point.x, point.y + 1] == 1)) // v
             {
                 return false;
             }
 
-            if (wallType == 2 && (Bot.walls[point.x - 1, point.y] == 2 || Bot.walls[point.x + 2, point.y] == 2)) // h
+            if (wallType == 2 && (IsInbound(point.x - 1, point.y) && Bot.walls[point.x - 1, point.y] == 2 || IsInbound(point.x + 2, point.y) && Bot.walls[point.x + 2, point.y] == 2)) // h
             {
                 return false;
             }
