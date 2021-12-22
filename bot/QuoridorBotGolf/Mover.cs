@@ -8,115 +8,136 @@ namespace QuoridorBotGolf
 {
     public class Mover
     {
-        public string MakeMove()
+        public static Command MakeMove()
         {
             Way ourWay = Waver.FindWinWay(Bot.ourPlayer);
             int ourDistance = ourWay.GetLength();
 
             Way oppositeWay = Waver.FindWinWay(Bot.oppositePlayer);
-            int oppositeDistance = oppositeWay.GetLength();   
-
+            if (oppositeWay == null)
+            {
+                Point nextPoint = ourWay.GetFirstPoint();
+                return Move(nextPoint);
+            }
+            int oppositeDistance = oppositeWay.GetLength();
+            //Console.WriteLine("dist: " + ourDistance + " " + oppositeDistance);
             if (ourDistance <= oppositeDistance)
             {
                 Point nextPoint = ourWay.GetFirstPoint();
                 return Move(nextPoint);
             }
-            string move = TryToSetWall(oppositeWay);
-            if (move == null)
+
+            Command command = null;
+            if (Bot.ourPlayer.GetWallsSet() < 10)
+            {
+                command = TryToSetWall(oppositeWay);
+            }
+            if (command == null)
             {
                 Point nextPoint = ourWay.GetFirstPoint();
                 return Move(nextPoint);
             }
-            return move;
+            Bot.ourPlayer.IncWallsSet();
+            return command;
         }
 
-        private static string Move(Point point)
+        private static Command Move(Point point)
         {
+            string word = "move";
+            if (Math.Abs(Bot.ourPlayer.x - point.x) > 1 || Math.Abs(Bot.ourPlayer.y - point.y) > 1)
+            {
+                word = "jump";                
+            }
             Bot.ourPlayer.SetPosition(point);
-            return Translator.PointToHuman(point, false);
+            return new Command(word, point);
         }
 
-        private static string TryToSetWall(Way way)
+        private static Command TryToSetWall(Way way)
         {
             for (int i = 0; i < way.GetLength(); i ++)
             {
                 Point currentPoint = way.GetPoint(i);
-                if (currentPoint.x - Bot.oppositePlayer.x > 0)
-                {
-                    Point w1point = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (IsWallSetAt(w1point, 1)) { continue; }
-                    Point w2point = currentPoint;
-                    if (IsWallSetAt(w2point, 1)) { continue; }
-
-                    Point wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) {
-                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
-                        return Translator.PointToHuman(wallPoint, true) + "v"; 
-                    }
-
-                    wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) {
-                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
-                        return Translator.PointToHuman(wallPoint, true) + "v"; 
-                    }
-                }
-                if (currentPoint.x - Bot.oppositePlayer.x < 0)
-                {
-                    Point w1point = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (IsWallSetAt(w1point, 1)) { continue; }
-                    Point w2point = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (IsWallSetAt(w2point, 1)) { continue; }
-
-                    Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 1)) {
-                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
-                        return Translator.PointToHuman(wallPoint, true) + "v"; 
-                    }
-
-                    wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 1)) {
-                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
-                        return Translator.PointToHuman(wallPoint, true) + "v"; 
-                    }
-                }
 
                 if (currentPoint.y - Bot.oppositePlayer.y > 0)
                 {
                     Point w1point = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (IsWallSetAt(w1point, 2)) { continue; }
+                    if (IsWallSetAt(w1point)) { continue; }
                     Point w2point = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (IsWallSetAt(w2point, 2)) { continue; }
+                    if (IsWallSetAt(w2point)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) {
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 2))
+                    {
                         Bot.walls[wallPoint.x, wallPoint.y] = 2;
-                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                        return new Command("wall", wallPoint, "h");
                     }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
-                    if (CanWallBeSet(wallPoint, 2)) {
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 2))
+                    {
                         Bot.walls[wallPoint.x, wallPoint.y] = 2;
-                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                        return new Command("wall", wallPoint, "h");
                     }
                 }
 
                 if (currentPoint.y - Bot.oppositePlayer.y < 0)
                 {
                     Point w1point = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (IsWallSetAt(w1point, 2)) { continue; }
+                    if (IsWallSetAt(w1point)) { continue; }
                     Point w2point = new Point(currentPoint.x, currentPoint.y);
-                    if (IsWallSetAt(w2point, 2)) { continue; }
+                    if (IsWallSetAt(w2point)) { continue; }
 
                     Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) {
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 2))
+                    {
                         Bot.walls[wallPoint.x, wallPoint.y] = 2;
-                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                        return new Command("wall", wallPoint, "h");
                     }
 
                     wallPoint = new Point(currentPoint.x, currentPoint.y);
-                    if (CanWallBeSet(wallPoint, 2)) {
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 2))
+                    {
                         Bot.walls[wallPoint.x, wallPoint.y] = 2;
-                        return Translator.PointToHuman(wallPoint, true) + "h"; 
+                        return new Command("wall", wallPoint, "h");
+                    }
+                }
+
+                if (currentPoint.x - Bot.oppositePlayer.x > 0)
+                {
+                    Point w1point = new Point(currentPoint.x, currentPoint.y - 1);
+                    if (IsWallSetAt(w1point)) { continue; }
+                    Point w2point = currentPoint;
+                    if (IsWallSetAt(w2point)) { continue; }
+
+                    Point wallPoint = new Point(currentPoint.x, currentPoint.y - 1);
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return new Command("wall", wallPoint, "v");
+                    }
+
+                    wallPoint = new Point(currentPoint.x, currentPoint.y);
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return new Command("wall", wallPoint, "v"); 
+                    }
+                }
+                if (currentPoint.x - Bot.oppositePlayer.x < 0)
+                {
+                    Point w1point = new Point(currentPoint.x - 1, currentPoint.y - 1);
+                    if (IsWallSetAt(w1point)) { continue; }
+                    Point w2point = new Point(currentPoint.x - 1, currentPoint.y);
+                    if (IsWallSetAt(w2point)) { continue; }
+
+                    Point wallPoint = new Point(currentPoint.x - 1, currentPoint.y - 1);
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return new Command("wall", wallPoint, "v"); 
+                    }
+
+                    wallPoint = new Point(currentPoint.x - 1, currentPoint.y);
+                    if (IsInbound(wallPoint.x, wallPoint.y) && CanWallBeSet(wallPoint, 1)) {
+                        Bot.walls[wallPoint.x, wallPoint.y] = 1;
+                        return new Command("wall", wallPoint, "v"); 
                     }
                 }
             }
@@ -132,9 +153,11 @@ namespace QuoridorBotGolf
         {
             Bot.walls[point.x, point.y] = wallType;
             Way ourWay = Waver.FindWinWay(Bot.ourPlayer);
+            if (ourWay == null) { return false; }
             int ourDistance = ourWay.GetLength();
 
             Way oppositeWay = Waver.FindWinWay(Bot.oppositePlayer);
+            if (oppositeWay == null) { return false; }
             int oppositeDistance = oppositeWay.GetLength();
             Bot.walls[point.x, point.y] = 0;
             if (ourDistance == 0 || oppositeDistance == 0) {
@@ -146,7 +169,7 @@ namespace QuoridorBotGolf
                 return false;
             }
 
-            if (wallType == 2 && (IsInbound(point.x - 1, point.y) && Bot.walls[point.x - 1, point.y] == 2 || IsInbound(point.x + 2, point.y) && Bot.walls[point.x + 2, point.y] == 2)) // h
+            if (wallType == 2 && (IsInbound(point.x - 1, point.y) && Bot.walls[point.x - 1, point.y] == 2 || IsInbound(point.x + 1, point.y) && Bot.walls[point.x + 1, point.y] == 2)) // h
             {
                 return false;
             }
@@ -155,9 +178,9 @@ namespace QuoridorBotGolf
 
         }
 
-        private static bool IsWallSetAt(Point point, int wallType)
+        private static bool IsWallSetAt(Point point)
         {
-            return IsInbound(point.x, point.y) && Bot.walls[point.x, point.y] == wallType;
+            return IsInbound(point.x, point.y) && Bot.walls[point.x, point.y] != 0;
         }
         
     }

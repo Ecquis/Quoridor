@@ -6,27 +6,16 @@ namespace QuoridorBotGolf
     {
         public static Player ourPlayer, oppositePlayer;
         public static int[,] walls = new int[8, 8]; // 0 is empty, 1 is horizontal, 2 is vertical
-        public static IReader reader = new Reader();
-        public static Mover mover = new Mover();
-        public static string data = "";
         public static string dataOutput = "";
         static void Main(string[] args)
         {
-            data = Console.ReadLine();
-            if (reader.ReadFirstMessage(data))
+            string firstMessage = Console.ReadLine();
+            if (Reader.IsFirstMove(firstMessage))
             {
                 ourPlayer = new Player(4, 8, 0);
                 oppositePlayer = new Player(4, 0, 8);
-                dataOutput = mover.MakeMove();
-                if (dataOutput.Length == 3)
-                {
-                    dataOutput = "wall " + dataOutput;
-                }
-                else
-                {
-                    dataOutput = "move " + dataOutput;
-                }
-                Console.WriteLine(dataOutput);
+                Command command = Mover.MakeMove();
+                PrintMove(command);
             }
             else
             {
@@ -34,25 +23,41 @@ namespace QuoridorBotGolf
                 oppositePlayer = new Player(4, 8, 0);
             }
 
-            while (ourPlayer.y != ourPlayer.winPosition || oppositePlayer.y != oppositePlayer.winPosition)
+            while (true)
             {
-                data = Console.ReadLine();
-                reader.Read(data);
-                dataOutput = mover.MakeMove();
+                string message = Console.ReadLine();
+                Command command = Reader.ParseCommand(message);
+                ExecCommand(command);
+
+                command = Mover.MakeMove();
+                PrintMove(command);
                 //ShowField();
-                if (dataOutput.Length == 3)
-                {
-                    dataOutput = "wall " + dataOutput;
-                } else
-                {
-                    dataOutput = "move " + dataOutput;
-                }
-                Console.WriteLine(dataOutput);
             }
         }
+
+
+        // 1 - v, 2 - h
+        static void ExecCommand(Command command)
+        {
+            if (command.word == "wall")
+            {
+                walls[command.point.x, command.point.y] = command.type == "v" ? 1 : 2;
+            }
+            else
+            {
+                oppositePlayer.SetPosition(command.point);
+            }
+        }
+        static void PrintMove(Command command)
+        {
+            //Console.WriteLine("x {0} y {1}", command.point.x, command.point.y);
+            string humanPoint = Translator.PointToHuman(command.point, command.type != null);
+            Console.WriteLine("{0} {1}{2}", command.word, humanPoint, command.type);
+        }
+
         static void ShowField()
         {
-            string[,] strs = new string[9, 9];
+            string[,] strs = new string[17, 17];
             for (int y = 0; y < 9; y++)
             {
                 for (int x = 0; x < 9; x++)
@@ -61,33 +66,36 @@ namespace QuoridorBotGolf
                     {
                         if (walls[x, y] == 1)
                         {
-                            strs[x, y] = "v";
-                            strs[x, y - 1] = "v";
-                            strs[x, y + 1] = "v";
+                            strs[2 * x + 1, 2 * y + 1] = "v";
+                            strs[2 * x + 1, 2 * y] = "v";
+                            strs[2 * x + 1, 2 * y+2] = "v";
                         }
                         if (walls[x, y] == 2)
                         {
-                            strs[x, y] = "h";
-                            strs[x - 1, y] = "h";
-                            strs[x + 1, y] = "h";
+                            strs[2 * x + 1, 2*y+1] = "h";
+                            strs[2 * x, 2 * y + 1] = "h";
+                            strs[2 * x + 2, 2 * y + 1] = "h";
                         }
                     }
 
                     if (ourPlayer.x == x && ourPlayer.y == y)
                     {
-                        strs[x, y] = "p";
+                        strs[2*x, 2*y] = "p";
                     } else if (oppositePlayer.x == x && oppositePlayer.y == y)
                     {
-                        strs[x, y] = "r";
+                        strs[2*x, 2*y] = "r";
                     }
                 }
             }
             Console.WriteLine("--------Field---------");
-            for (int y = 0; y < 9; y ++)
+            for (int y = 0; y < 17; y ++)
             {
-                for (int x = 0; x < 9; x ++)
+                for (int x = 0; x < 17; x ++)
                 {
-                    if (strs[x, y] == null)
+                    if ((x % 2 == 1 || y % 2 == 1) && strs[x, y] == null)
+                    {
+                        Console.Write(".");
+                    } else if (strs[x, y] == null)
                     {
                         Console.Write("o");
                     } else

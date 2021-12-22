@@ -9,6 +9,7 @@ namespace QuoridorBotGolf
     public class Player : Point
     {
         public int winPosition;
+        public int wallsSet = 0;
 
         public Player(int x, int y, int winPosition): base(x, y) {
             this.x = x;
@@ -26,5 +27,15 @@ namespace QuoridorBotGolf
 		{
             return new Point(this.x, this.y);
 		}
+
+        public int GetWallsSet()
+        {
+            return wallsSet;
+        }
+
+        public void IncWallsSet()
+        {
+            wallsSet++;
+        }
     }
 }

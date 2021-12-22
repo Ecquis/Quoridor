@@ -52,5 +52,16 @@ namespace QuoridorBotGolf
             points.RemoveAt(points.Count - 1);
         }
 
+        public override string ToString()
+        {
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < points.Count; i++)
+            {
+                str.Append(points[i].x + " " + points[i].y + "-> ");
+            }
+            str.Append("\n");
+            return str.ToString();
+        }
+
     }
 }
